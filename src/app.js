@@ -1,14 +1,12 @@
-const express = require('express');
-const api = require("./api")
-require('dotenv/config');
-
-
+import express, { json } from 'express';
+import api from "./api/index.js";
+import 'dotenv/config';
 
 const app = express();
 const PORT = process.env.PORT;
 
 app.use("", api)
-app.use(express.json());
+app.use(json());
 
 app.listen(PORT, (error) => {
     if (!error)

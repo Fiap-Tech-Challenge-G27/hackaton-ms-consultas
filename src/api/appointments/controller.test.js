@@ -23,7 +23,7 @@ describe("PATCH /approval-status", () => {
 describe("POST /", () => {
     it("Authorized to patient", async () => {
         const response = await request(patient_1).post("/appointments").send({})
-
+        
         expect(response.statusCode).not.toBe(401)
         expect(response.statusCode).not.toBe(403)
     })

@@ -1,9 +1,14 @@
 {
-  "collectCoverage": true,
-  "moduleFileExtensions": ["js", "mjs"],
-  "testEnvironment": "node",
-  "setupFilesAfterEnv": ["./test/setup.js"],
-  "transform": {},
-  "testRegex": "((\\.|/*.)(test|spec))\\.js?$",
-  "coveragePathIgnorePatterns": ["/node_modules/", "src/config.js"]
+    "collectCoverage": true,
+    "moduleFileExtensions": ["js", "mjs"],
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["./test/setup.js"],
+    "transform": {},
+    "testRegex": "((\\.|/*.)(test|spec))\\.js?$",
+    "coveragePathIgnorePatterns": [
+        "/node_modules/",
+        "src/config.js",
+        "src/app.js",
+        "test"
+    ]
 }

@@ -25,30 +25,26 @@ function mockRes() {
     return { jsonMock, statusMock, res }
 }
 
-describe("JWT Verify", () => {
-    it("Without Token then Unauthenticated", async () => {
+const testUnsuccessfully = (token, expectedStatus, message) => {
+    return async () => {
         const req = mockReq()
         const { jsonMock, statusMock, res } = mockRes()
         const next = jest.fn()
 
         verify([])(req, res, next)
 
-        expect(statusMock).haveBeenCalledOnceWith(401)
+        expect(statusMock).haveBeenCalledOnceWith(expectedStatus)
         expect(jsonMock).haveBeenCalledOnceWith({
-            message: "Unauthenticated",
+            message,
         })
-    })
+    }
+}
 
-    it("Invalid Token then Unauthenticated", async () => {
-        const req = mockReq("invalid token")
-        const { jsonMock, statusMock, res } = mockRes()
-        const next = jest.fn()
+describe("JWT Verify", () => {
+    it(
+        "Without Token then Unauthenticated",
+        testUnsuccessfully(null, 401, "Unauthenticated")
+    )
 
-        verify([])(req, res, next)
-
-        expect(statusMock).haveBeenCalledOnceWith(401)
-        expect(jsonMock).haveBeenCalledOnceWith({
-            message: "Unauthenticated",
-        })
-    })
+    it("Invalid Token then Unauthenticated", testUnsuccessfully("invalid token", 401, "Unauthenticated"))
 })

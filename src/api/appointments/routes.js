@@ -1,13 +1,13 @@
 import { Router } from "express"
-import { verify } from "../../utils/jwt"
+import { authenticate } from "../../utils/jwt"
 import { patchAppointmentApprovalStatus, postAppointment } from "./controller"
 
 const router = Router()
 
-router.post("", verify({ roles: ["patient"] }), postAppointment)
+router.post("", authenticate({ roles: ["patient"] }), postAppointment)
 router.patch(
     "/approval-status",
-    verify({ roles: ["doctor"] }),
+    authenticate({ roles: ["doctor"] }),
     patchAppointmentApprovalStatus
 )
 

@@ -1,10 +1,8 @@
 import { jest } from "@jest/globals"
-import jwt from "jsonwebtoken"
-import { verify } from "."
-import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
-import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
+import { authenticate } from "."
 import { signIn } from "../../utils/tests/auth"
-import config from "../../config"
+import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
+import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
 
 function mockReq(token) {
     const headers = token
@@ -36,7 +34,7 @@ const testUnsuccessfully = ({ token, roles, expectedStatus, message }) => {
         const { jsonMock, statusMock, res } = mockRes()
         const next = jest.fn()
 
-        verify({ roles })(req, res, next)
+        authenticate({ roles })(req, res, next)
 
         expect(statusMock).haveBeenCalledOnceWith(expectedStatus)
         expect(jsonMock).haveBeenCalledOnceWith({
@@ -101,7 +99,7 @@ describe("JWT Verify", () => {
         const { res } = mockRes()
         const next = jest.fn()
 
-        verify({ roles: ["patient"] })(req, res, next)
+        authenticate({ roles: ["patient"] })(req, res, next)
 
         expect(next).haveBeenCalledOnceWith()
     })

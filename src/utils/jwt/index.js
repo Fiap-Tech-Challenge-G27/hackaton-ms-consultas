@@ -13,7 +13,7 @@ const rolePropertyMap = {
     patient: "cpf",
 }
 
-export const verify = ({ roles }) => {
+export const authenticate = ({ roles }) => {
     return (req, res, next) => {
         const token = extractToken(req)
 

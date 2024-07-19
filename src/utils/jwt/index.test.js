@@ -1,6 +1,8 @@
 import { jest } from "@jest/globals"
+import jwt from "jsonwebtoken"
 import { verify } from "."
 import { signAsDoctor, signAsPatient } from "../../utils/tests/auth"
+import config from "../../config"
 
 function mockReq(token) {
     const headers = token
@@ -71,4 +73,34 @@ describe("JWT Verify", () => {
             message: "Unauthorized",
         })
     )
+
+    it(
+        "Valid token when Patient but need be Doctor",
+        testUnsuccessfully({
+            token: signAsPatient("cpf"),
+            roles: ["doctor"],
+            expectedStatus: 403,
+            message: "Unauthorized",
+        })
+    )
+
+    it(
+        "Valid token invalid role",
+        testUnsuccessfully({
+            token: jwt.sign({ invalid: "invalid" }, config.jwtSecret),
+            roles: ["doctor"],
+            expectedStatus: 403,
+            message: "Invalid Role",
+        })
+    )
+
+    it("Success", async () => {
+        const req = mockReq(signAsPatient("cpf"))
+        const { res } = mockRes()
+        const next = jest.fn()
+
+        verify({ roles: ["patient"] })(req, res, next)
+
+        expect(next).haveBeenCalledOnceWith()
+    })
 })

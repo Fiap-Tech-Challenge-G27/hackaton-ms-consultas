@@ -1,10 +1,10 @@
-import express, { json } from 'express';
-import api from "./api/index.js";
+import express, { json } from "express"
+import api from "./api/index.js"
 
-const app = express();
+const app = express()
 
 app.use("", api)
-app.use(json());
+app.use(json())
 
 app.use((err, req, res, next) => {
     console.log(err)

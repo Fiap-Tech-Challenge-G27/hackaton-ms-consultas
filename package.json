@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "start": "node src/server.js",
-        "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose"
+        "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose",
+        "prettier": "prettier --write src"
     },
     "repository": {
         "type": "git",
@@ -33,6 +34,7 @@
     },
     "devDependencies": {
         "jest": "^29.7.0",
-        "mongodb-memory-server": "^10.0.0"
+        "mongodb-memory-server": "^10.0.0",
+        "prettier": "^3.3.3"
     }
 }

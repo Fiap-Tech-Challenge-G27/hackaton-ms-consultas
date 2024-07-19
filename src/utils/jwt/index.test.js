@@ -27,7 +27,7 @@ function mockRes() {
 
 const testUnsuccessfully = (token, expectedStatus, message) => {
     return async () => {
-        const req = mockReq()
+        const req = mockReq(token)
         const { jsonMock, statusMock, res } = mockRes()
         const next = jest.fn()
 

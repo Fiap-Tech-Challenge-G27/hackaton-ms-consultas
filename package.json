@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose"
   },
   "repository": {
     "type": "git",
@@ -20,6 +20,10 @@
   "homepage": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas#readme",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.19.2"
+    "express": "^4.19.2",
+    "supertest": "^7.0.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }

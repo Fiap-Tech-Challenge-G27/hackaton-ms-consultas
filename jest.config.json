@@ -1,0 +1,8 @@
+{
+  "collectCoverage": true,
+  "moduleFileExtensions": ["js", "mjs"],
+  "testEnvironment": "node",
+  "transform": {},
+  "testRegex": "((\\.|/*.)(test|spec))\\.js?$",
+  "coveragePathIgnorePatterns": ["/node_modules/"]
+}

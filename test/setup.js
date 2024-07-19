@@ -1,6 +1,7 @@
-import { jest } from '@jest/globals'
-import { MongoMemoryServer } from 'mongodb-memory-server'
-import mongoose from 'mongoose'
+import { jest } from "@jest/globals"
+import { MongoMemoryServer } from "mongodb-memory-server"
+import { haveBeenCalledOnceWith } from "./customMatchers"
+import mongoose from "mongoose"
 
 jest.setTimeout(10000)
 
@@ -23,19 +24,25 @@ global.parseFloat = parseFloat
 let mongoServer
 
 beforeAll(async () => {
-  mongoServer = await MongoMemoryServer.create()
-  const mongoUri = mongoServer.getUri()
-  mongoose.connect(mongoUri)
+    mongoServer = await MongoMemoryServer.create()
+    const mongoUri = mongoServer.getUri()
+    mongoose.connect(mongoUri)
+
+    expect.extend({
+        haveBeenCalledOnceWith,
+    })
 })
 
 afterAll(async () => {
-  await mongoose.disconnect()
-  await mongoServer.stop()
+    await mongoose.disconnect()
+    await mongoServer.stop()
 })
 
 afterEach(async () => {
-  const { collections } = mongoose.connection
-  const promises = Object.values(collections).map((collection) => collection.deleteMany())
+    const { collections } = mongoose.connection
+    const promises = Object.values(collections).map((collection) =>
+        collection.deleteMany()
+    )
 
-  await Promise.all(promises)
+    await Promise.all(promises)
 })

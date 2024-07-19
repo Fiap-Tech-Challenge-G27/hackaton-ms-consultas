@@ -1,32 +1,38 @@
 {
-  "name": "hackaton-ms-consultas",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node src/server.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas/issues"
-  },
-  "homepage": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas#readme",
-  "dependencies": {
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.5.1",
-    "supertest": "^7.0.0"
-  },
-  "devDependencies": {
-    "jest": "^29.7.0",
-    "mongodb-memory-server": "^10.0.0"
-  }
+    "name": "hackaton-ms-consultas",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "node src/server.js",
+        "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas/issues"
+    },
+    "homepage": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas#readme",
+    "prettier": {
+        "trailingComma": "es5",
+        "tabWidth": 4,
+        "semi": false,
+        "singleQuote": false
+    },
+    "dependencies": {
+        "dotenv": "^16.4.5",
+        "express": "^4.19.2",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.5.1",
+        "supertest": "^7.0.0"
+    },
+    "devDependencies": {
+        "jest": "^29.7.0",
+        "mongodb-memory-server": "^10.0.0"
+    }
 }

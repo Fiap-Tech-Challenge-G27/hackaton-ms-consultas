@@ -5,5 +5,5 @@
   "setupFilesAfterEnv": ["./test/setup.js"],
   "transform": {},
   "testRegex": "((\\.|/*.)(test|spec))\\.js?$",
-  "coveragePathIgnorePatterns": ["/node_modules/"]
+  "coveragePathIgnorePatterns": ["/node_modules/", "src/config.js"]
 }

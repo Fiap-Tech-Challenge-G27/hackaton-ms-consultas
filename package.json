@@ -1,0 +1,24 @@
+{
+  "name": "hackaton-ms-consultas",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas/issues"
+  },
+  "homepage": "https://github.com/Fiap-Tech-Challenge-G27/hackaton-ms-consultas#readme",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2"
+  }
+}

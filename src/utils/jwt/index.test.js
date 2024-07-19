@@ -1,7 +1,9 @@
 import { jest } from "@jest/globals"
 import jwt from "jsonwebtoken"
 import { verify } from "."
-import { signAsDoctor, signAsPatient } from "../../utils/tests/auth"
+import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
+import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
+import { signIn } from "../../utils/tests/auth"
 import config from "../../config"
 
 function mockReq(token) {
@@ -67,7 +69,7 @@ describe("JWT Verify", () => {
     it(
         "Valid token when Doctor but need be Patient",
         testUnsuccessfully({
-            token: signAsDoctor("crm"),
+            token: signIn(doctor_1),
             roles: ["patient"],
             expectedStatus: 403,
             message: "Unauthorized",
@@ -77,7 +79,7 @@ describe("JWT Verify", () => {
     it(
         "Valid token when Patient but need be Doctor",
         testUnsuccessfully({
-            token: signAsPatient("cpf"),
+            token: signIn(patient_1),
             roles: ["doctor"],
             expectedStatus: 403,
             message: "Unauthorized",
@@ -87,7 +89,7 @@ describe("JWT Verify", () => {
     it(
         "Valid token invalid role",
         testUnsuccessfully({
-            token: jwt.sign({ invalid: "invalid" }, config.jwtSecret),
+            token: signIn({ invalid: "invalid" }),
             roles: ["doctor"],
             expectedStatus: 403,
             message: "Invalid Role",
@@ -95,7 +97,7 @@ describe("JWT Verify", () => {
     )
 
     it("Success", async () => {
-        const req = mockReq(signAsPatient("cpf"))
+        const req = mockReq(signIn(patient_1))
         const { res } = mockRes()
         const next = jest.fn()
 

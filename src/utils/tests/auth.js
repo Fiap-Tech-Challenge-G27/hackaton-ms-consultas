@@ -1,7 +1,10 @@
-import jwt from "jsonwebtoken";
-import config from '../../config';
+import jwt from "jsonwebtoken"
+import config from "../../config"
 
-const { jwtSecret } = config;
+const { jwtSecret } = config
 
-export const signAsDoctor = (crm, options) => jwt.sign({ crm }, jwtSecret, options)
-export const signAsPatient = (cpf, options) => jwt.sign({ cpf }, jwtSecret, options)
+export const signIn = (userObject, options) =>
+    jwt.sign(userObject, jwtSecret, options)
+
+export const signAsDoctor = (crm, options) => signIn({ crm }, options)
+export const signAsPatient = (cpf, options) => signIn({ cpf }, options)

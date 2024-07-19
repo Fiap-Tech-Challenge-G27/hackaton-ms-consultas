@@ -1,6 +1,6 @@
 import request from "supertest";
 import app from "../../app";
-import { signAsDoctor, signAsPatient } from "../../utils/jwt";
+import { signAsDoctor, signAsPatient } from "../../utils/tests/auth";
 
 describe('PATCH /approval-status', () => {
     it('Unauthorized to patient', async () => {
@@ -33,7 +33,7 @@ describe('POST /', () => {
         const token = signAsDoctor("1111")
         const response = await request(app).post("/appointments")
             .set('authorization', `Bearer ${token}`).send({})
-        
+
         expect(response.statusCode).toBe(403);
     })
 })

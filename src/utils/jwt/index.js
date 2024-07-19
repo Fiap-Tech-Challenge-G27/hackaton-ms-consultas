@@ -3,12 +3,14 @@ import config from '../../config';
 
 const { jwtSecret } = config;
 
-export const signAsDoctor = (crm, options) => jwt.sign({ crm }, jwtSecret, options)
-export const signAsPatient = (cpf, options) => jwt.sign({ cpf }, jwtSecret, options)
-
 const extractToken = (req) => {
     const [type, token] = req.headers.authorization?.split(" ") ?? [];
     return type === "Bearer" ? token : undefined;
+}
+
+const rolePropertyMap = {
+    "doctor": "crm",
+    "patient": "cpf"
 }
 
 export const verify = ({ roles }) => {
@@ -23,18 +25,14 @@ export const verify = ({ roles }) => {
             return res.status(401).json({ 'message': 'Unauthenticated' })
         }
 
-        if (decoded.hasOwnProperty('crm')) {
-            if (!roles.includes("doctor")) {
-                return res.status(403).json({ 'message': 'Unauthorized to doctor' })
+        for (const [role, property] of Object.entries(rolePropertyMap)) {
+            if (decoded.hasOwnProperty(property)) {
+                if (!roles.includes(role)) {
+                    return res.status(403).json({ 'message': `Unauthorized to ${role}` })
+                }
+                return next()
             }
-            return next()
-        }
 
-        if (decoded.hasOwnProperty('cpf')) {
-            if (!roles.includes("patient")) {
-                return res.status(403).json({ 'message': 'Unauthorized to patient' })
-            }
-            return next()
         }
 
         return res.status(403).json({ 'message': 'Invalid Role' })

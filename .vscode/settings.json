@@ -1,4 +1,4 @@
 {
-    "jest.jestCommandLine": "npm run test --",
-    "jest.runMode": "on-demand"
+    "jest.jestCommandLine": "\\. /home/matheus/.nvm/nvm.sh && nvm exec 20.15.0 npm run test --",
+    "jest.runMode": "on-demand",
 }

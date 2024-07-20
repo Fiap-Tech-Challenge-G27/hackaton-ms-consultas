@@ -23,15 +23,15 @@ describe("PATCH /approval-status", () => {
 
 describe("POST /", () => {
     it("Authorized to patient", async () => {
-        const response = await request(patient_1)
-            .post("/appointments")
-            .send({
-                doctorCRM: doctor_1.crm,
-                appointmentStart: "2015-03-25T12:00:00.000Z",
-            })
-        
+        const response = await request(patient_1).post("/appointments").send({
+            doctorCRM: doctor_1.crm,
+            appointmentStart: "2015-03-25T12:00:00.000Z",
+        })
+
         expect(response.statusCode).toBe(200)
-        console.log(await appointmentSchema.find({}, {_id: false, __v: false}))
+        console.log(
+            await appointmentSchema.find({}, { _id: false, __v: false })
+        )
     })
     it("Unauthorized to doctor", async () => {
         const response = await request(doctor_1).post("/appointments").send({})

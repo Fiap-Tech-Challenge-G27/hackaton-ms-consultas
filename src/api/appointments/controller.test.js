@@ -6,11 +6,10 @@ import appointmentSchema from "./model.js"
 
 describe("PATCH /approval-status", () => {
     it("Unauthorized to patient", async () => {
-        const response = await request(patient_1)
+        await request(patient_1)
             .patch("/appointments/approval-status")
             .send({})
-
-        expect(response.statusCode).toBe(403)
+            .expect(403)
     })
     it("Authorized to doctor", async () => {
         const response = await request(doctor_1)
@@ -29,19 +28,17 @@ describe("POST /", () => {
             appointmentStart: appointment_1.appointmentStart,
         }
 
-        const response = await request(appointment_1.patient)
+        await request(appointment_1.patient)
             .post("/appointments")
             .send(payload)
+            .expect(200)
 
-        expect(response.statusCode).toBe(200)
         await expect(appointmentSchema).hasOneDocumentWith({
             patientCPF: appointment_1.patient.cpf,
             ...payload,
         })
     })
     it("Unauthorized to doctor", async () => {
-        const response = await request(doctor_1).post("/appointments").send({})
-
-        expect(response.statusCode).toBe(403)
+        await request(doctor_1).post("/appointments").send({}).expect(403)
     })
 })

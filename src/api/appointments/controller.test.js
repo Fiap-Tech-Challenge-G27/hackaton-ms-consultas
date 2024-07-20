@@ -7,7 +7,10 @@ import {
     appointment_2,
     transformAppointmentToDTO,
 } from "../../utils/tests/objectMothers/appointmentsMother.js"
-import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
+import {
+    doctor_1,
+    doctor_2,
+} from "../../utils/tests/objectMothers/doctorsMother"
 import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
 import appointmentSchema from "./model.js"
 
@@ -68,7 +71,7 @@ describe("PATCH /approval-status", () => {
     it("Doctor can reject", testChangeValue("rejected"))
 
     it("Doctor when don't exists", async () => {
-        const id = (new mongoose.Types.ObjectId()).toString()
+        const id = new mongoose.Types.ObjectId().toString()
 
         await request(doctor_1)
             .patch(`/appointments/${id}/approval-status`)
@@ -78,6 +81,22 @@ describe("PATCH /approval-status", () => {
             .expect(404, {
                 message: `Not found a appointments with id ${id}`,
             })
+    })
+
+    it("Doctor try change other doctor appointment then 404", async () => {
+        const appointmentDTO = transformAppointmentToDTO(appointment_1)
+
+        const { _id } = await appointmentSchema.create(appointmentDTO)
+
+        await request(doctor_2)
+            .patch(`/appointments/${_id}/approval-status`)
+            .send({
+                approvalStatus: "approved",
+            })
+            .expect(404)
+
+        const { approvalStatus } = await appointmentSchema.findById(_id)
+        expect(approvalStatus).toBe("pending")
     })
 })
 

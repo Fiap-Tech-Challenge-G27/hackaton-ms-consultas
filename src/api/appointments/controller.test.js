@@ -75,6 +75,15 @@ describe("PATCH /approval-status", () => {
 })
 
 describe("POST /", () => {
+    async function expectHasMeetUrl(appointmentDTO) {
+        const document = await appointmentSchema.findOne(appointmentDTO)
+
+        expect(
+            /https:\/\/meet\.google\.com\/\w{3}-\w{4}-\w{3}/.test(
+                document["meetUrl"]
+            )
+        ).toBe(true)
+    }
     it("Authorized to patient", async () => {
         const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
@@ -84,27 +93,7 @@ describe("POST /", () => {
             .expect(200)
 
         await expect(appointmentSchema).hasOneDocumentWith(appointmentDTO)
-    })
-    it("Meet Link created", async () => {
-        const appointmentDTO = transformAppointmentToDTO(appointment_1)
-
-        const response = await request(appointment_1.patient)
-            .post("/appointments")
-            .send(
-                copyDocumentWithout(
-                    transformAppointmentToDTO(appointment_1),
-                    "patientCPF"
-                )
-            )
-            .expect(200)
-
-        const result = await appointmentSchema.findOne(appointmentDTO)
-
-        expect(
-            /https:\/\/meet\.google\.com\/\w{3}-\w{4}-\w{3}/.test(
-                result["meetUrl"]
-            )
-        ).toBe(true)
+        await expectHasMeetUrl(appointmentDTO)
     })
     it("Unauthorized to doctor", async () => {
         await request(doctor_1).post("/appointments").send({}).expect(403)

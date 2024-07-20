@@ -1,3 +1,4 @@
+import { copyDocumentWithout } from "../../utils/general.js"
 import { generateMeetLink } from "../../utils/meets/meetGenerator.js"
 import request from "../../utils/tests/custom_request"
 import {
@@ -8,16 +9,6 @@ import {
 import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
 import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
 import appointmentSchema from "./model.js"
-
-function copyDocumentWithout(document, ...args) {
-    const copy = { ...document }
-
-    for (let arg of args) {
-        delete copy[arg]
-    }
-
-    return copy
-}
 
 describe("GET /", () => {
     let appointment_dto_1
@@ -49,7 +40,7 @@ describe("PATCH /approval-status", () => {
         await request(patient_1)
             .patch("/appointments/1234/approval-status")
             .send({})
-            .expect(403)
+            .expect(403, { message: "Unauthorized to patient" })
     })
 
     const testChangeValue = (value) => {

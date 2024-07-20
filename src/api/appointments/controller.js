@@ -1,6 +1,6 @@
-import appointmentSchema from "./model.js"
+import { copyDocumentWithout } from "../../utils/general.js"
 import { generateMeetLink } from "../../utils/meets/meetGenerator.js"
-
+import appointmentSchema from "./model.js"
 const queryPropertyMap = {
     crm: "doctorCRM",
     cpf: "patientCPF",
@@ -29,14 +29,14 @@ export const postAppointment = async (req, res) => {
     const { doctorCRM, appointmentStart } = req.body
     const { cpf } = res.locals.user
 
-    await appointmentSchema.create({
+    const result = await appointmentSchema.create({
         doctorCRM: doctorCRM,
         patientCPF: cpf,
         appointmentStart: appointmentStart,
         meetUrl: generateMeetLink(),
     })
 
-    return res.status(200).json({ message: "Server healthy" })
+    return res.status(200).json(copyDocumentWithout(result._doc, "__v"))
 }
 
 export const patchAppointmentApprovalStatus = async (req, res) => {
@@ -45,5 +45,5 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
 
     await appointmentSchema.updateOne({ _id: id }, { approvalStatus })
 
-    return res.status(200).json({ message: "Server healthy" })
+    return res.status(200).json({})
 }

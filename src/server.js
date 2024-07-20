@@ -1,8 +1,10 @@
+import mongoose from "mongoose"
 import app from "./app.js"
-
 import config from "./config.js"
 
-const { port } = config
+const { port, mongo } = config
+
+if (mongo.uri) mongoose.connect(mongo.uri)
 
 app.listen(port, (error) => {
     if (!error)

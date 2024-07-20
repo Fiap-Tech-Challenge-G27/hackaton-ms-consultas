@@ -43,7 +43,16 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
     const { id } = req.params
     const { approvalStatus } = req.body
 
-    await appointmentSchema.updateOne({ _id: id }, { approvalStatus })
+    const result = await appointmentSchema.updateOne(
+        { _id: id },
+        { approvalStatus }
+    )
+
+    if (result["matchedCount"] == 0) {
+        return res.status(404).json({
+            message: `Not found a appointments with id ${id}`,
+        })
+    }
 
     return res.status(200).json({})
 }

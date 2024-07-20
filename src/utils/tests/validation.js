@@ -6,5 +6,5 @@ export const validate = (req, res, next) => {
     if (result.isEmpty()) {
         return next()
     }
-    res.send({ errors: result.array() })
+    res.status(400).send({ errors: result.array() })
 }

@@ -7,6 +7,9 @@ import {
     patchAppointmentApprovalStatus,
     postAppointment,
 } from "./controller.js"
+
+const MONGO_OBJECT_ID_PATTERN = /^[0-9a-fA-F]{24}$/
+
 const router = Router()
 
 router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
@@ -22,8 +25,8 @@ router.post(
 router.patch(
     "/:id/approval-status",
     authenticate({ roles: ["doctor"] }),
-    body("approvalStatus").isString().isIn(['approved', 'rejected']),
-    param("id").isString(),
+    body("approvalStatus").isString().isIn(["approved", "rejected"]),
+    param("id").isString().matches(MONGO_OBJECT_ID_PATTERN),
     validate,
     patchAppointmentApprovalStatus
 )

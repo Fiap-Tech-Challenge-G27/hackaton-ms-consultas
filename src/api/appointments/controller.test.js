@@ -1,3 +1,4 @@
+import mongoose from "mongoose"
 import { copyDocumentWithout } from "../../utils/general.js"
 import { generateMeetLink } from "../../utils/meets/meetGenerator.js"
 import request from "../../utils/tests/custom_request"
@@ -9,6 +10,8 @@ import {
 import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
 import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
 import appointmentSchema from "./model.js"
+
+const GOOGLE_MEAT_URL_PATTERN = /https:\/\/meet\.google\.com\/\w{3}-\w{4}-\w{3}/
 
 describe("GET /", () => {
     let appointment_dto_1
@@ -63,17 +66,26 @@ describe("PATCH /approval-status", () => {
     it("Doctor can approve", testChangeValue("approved"))
 
     it("Doctor can reject", testChangeValue("rejected"))
+
+    it("Doctor when don't exists", async () => {
+        const id = (new mongoose.Types.ObjectId()).toString()
+
+        await request(doctor_1)
+            .patch(`/appointments/${id}/approval-status`)
+            .send({
+                approvalStatus: "approved",
+            })
+            .expect(404, {
+                message: `Not found a appointments with id ${id}`,
+            })
+    })
 })
 
 describe("POST /", () => {
     async function expectHasMeetUrl(appointmentDTO) {
         const document = await appointmentSchema.findOne(appointmentDTO)
 
-        expect(
-            /https:\/\/meet\.google\.com\/\w{3}-\w{4}-\w{3}/.test(
-                document["meetUrl"]
-            )
-        ).toBe(true)
+        expect(GOOGLE_MEAT_URL_PATTERN.test(document["meetUrl"])).toBe(true)
     }
     it("Authorized to patient", async () => {
         const appointmentDTO = transformAppointmentToDTO(appointment_1)

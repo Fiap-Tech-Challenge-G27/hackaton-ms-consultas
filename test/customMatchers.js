@@ -36,3 +36,19 @@ export function haveBeenCalledOnceWith(mockFunc, ...expectedArgs) {
         pass: true,
     }
 }
+
+export async function hasOneDocumentWith(schema, find) {
+    const result = await schema.countDocuments(find, { _id: false, __v: false })
+
+    if (result !== 1) {
+        return {
+            message: () => `There is ${result} documents`,
+            pass: false,
+        }
+    }
+
+    return {
+        message: () => `There is one document`,
+        pass: true,
+    }
+}

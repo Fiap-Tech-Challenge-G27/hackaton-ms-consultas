@@ -24,17 +24,20 @@ describe("PATCH /approval-status", () => {
 
 describe("POST /", () => {
     it("Authorized to patient", async () => {
+        const payload = {
+            doctorCRM: appointment_1.doctor.crm,
+            appointmentStart: appointment_1.appointmentStart,
+        }
+
         const response = await request(appointment_1.patient)
             .post("/appointments")
-            .send({
-                doctorCRM: appointment_1.doctor.crm,
-                appointmentStart: appointment_1.appointmentStart,
-            })
+            .send(payload)
 
         expect(response.statusCode).toBe(200)
-        console.log(
-            await appointmentSchema.find({}, { _id: false, __v: false })
-        )
+        await expect(appointmentSchema).hasOneDocumentWith({
+            patientCPF: appointment_1.patient.cpf,
+            ...payload,
+        })
     })
     it("Unauthorized to doctor", async () => {
         const response = await request(doctor_1).post("/appointments").send({})

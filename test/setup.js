@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals"
 import { MongoMemoryServer } from "mongodb-memory-server"
-import { haveBeenCalledOnceWith } from "./customMatchers"
+import { haveBeenCalledOnceWith, hasOneDocumentWith } from "./customMatchers"
 import mongoose from "mongoose"
 
 jest.setTimeout(10000)
@@ -30,6 +30,7 @@ beforeAll(async () => {
 
     expect.extend({
         haveBeenCalledOnceWith,
+        hasOneDocumentWith,
     })
 })
 

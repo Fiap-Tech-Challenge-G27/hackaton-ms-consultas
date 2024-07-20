@@ -16,6 +16,9 @@ const appointmentSchema = new Schema({
         enum: ["pending", "approved", "rejected"],
         default: "pending",
     },
+    meetUrl: {
+        type: String
+    }
 })
 
 const model = mongoose.model("Appointment", appointmentSchema)

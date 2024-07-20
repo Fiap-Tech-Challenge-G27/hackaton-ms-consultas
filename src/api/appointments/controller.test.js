@@ -1,3 +1,4 @@
+import { generateMeetLink } from "../../utils/meets/meetGenerator.js"
 import request from "../../utils/tests/custom_request"
 import {
     appointment_1,
@@ -20,11 +21,12 @@ function copyDocumentWithout(document, ...args) {
 
 describe("GET /", () => {
     let appointment_dto_1
-    let appointment_dto_2
+
     beforeEach(async () => {
-        appointment_dto_1 = await appointmentSchema.create(
-            transformAppointmentToDTO(appointment_1)
-        )
+        appointment_dto_1 = await appointmentSchema.create({
+            ...transformAppointmentToDTO(appointment_1),
+            meetUrl: generateMeetLink(),
+        })
         await appointmentSchema.create(transformAppointmentToDTO(appointment_2))
 
         appointment_dto_1 = copyDocumentWithout(appointment_dto_1._doc, "__v")
@@ -82,6 +84,27 @@ describe("POST /", () => {
             .expect(200)
 
         await expect(appointmentSchema).hasOneDocumentWith(appointmentDTO)
+    })
+    it("Meet Link created", async () => {
+        const appointmentDTO = transformAppointmentToDTO(appointment_1)
+
+        const response = await request(appointment_1.patient)
+            .post("/appointments")
+            .send(
+                copyDocumentWithout(
+                    transformAppointmentToDTO(appointment_1),
+                    "patientCPF"
+                )
+            )
+            .expect(200)
+
+        const result = await appointmentSchema.findOne(appointmentDTO)
+
+        expect(
+            /https:\/\/meet\.google\.com\/\w{3}-\w{4}-\w{3}/.test(
+                result["meetUrl"]
+            )
+        ).toBe(true)
     })
     it("Unauthorized to doctor", async () => {
         await request(doctor_1).post("/appointments").send({}).expect(403)

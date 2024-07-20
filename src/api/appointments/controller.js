@@ -1,4 +1,5 @@
 import appointmentSchema from "./model.js"
+import { generateMeetLink } from "../../utils/meets/meetGenerator.js"
 
 const queryPropertyMap = {
     crm: "doctorCRM",
@@ -32,6 +33,7 @@ export const postAppointment = async (req, res) => {
         doctorCRM: doctorCRM,
         patientCPF: cpf,
         appointmentStart: appointmentStart,
+        meetUrl: generateMeetLink(),
     })
 
     return res.status(200).json({ message: "Server healthy" })

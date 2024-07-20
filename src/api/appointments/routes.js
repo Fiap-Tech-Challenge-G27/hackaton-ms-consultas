@@ -5,8 +5,11 @@ import { validate } from "../../utils/tests/validation.js"
 import {
     patchAppointmentApprovalStatus,
     postAppointment,
+    getAppointment,
 } from "./controller.js"
 const router = Router()
+
+router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
 
 router.post(
     "",

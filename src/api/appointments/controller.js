@@ -1,5 +1,27 @@
 import appointmentSchema from "./model.js"
 
+const queryPropertyMap = {
+    crm: "doctorCRM",
+    cpf: "patientCPF",
+}
+const queryFind = (user) => {
+    for (const [requestProperty, queryProperty] of Object.entries(
+        queryPropertyMap
+    )) {
+        if (user.hasOwnProperty(requestProperty)) {
+            return {
+                [queryProperty]: user[requestProperty],
+            }
+        }
+    }
+
+    throw Error("Didn't find 'cpf' or 'crn")
+}
+export const getAppointment = async (req, res) => {
+    const result = await appointmentSchema.find(queryFind(res.locals.user))
+    return res.json(result)
+}
+
 export const postAppointment = async (req, res) => {
     const { doctorCRM, appointmentStart } = req.body
     const { cpf } = res.locals.user
@@ -16,8 +38,6 @@ export const postAppointment = async (req, res) => {
 export const patchAppointmentApprovalStatus = async (req, res) => {
     const { id } = req.params
     const { approvalStatus } = req.body
-
-    console.log(approvalStatus)
 
     await appointmentSchema.updateOne({ _id: id }, { approvalStatus })
 

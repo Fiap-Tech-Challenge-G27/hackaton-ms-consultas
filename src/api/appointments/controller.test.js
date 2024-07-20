@@ -1,6 +1,7 @@
 import request from "../../utils/tests/custom_request"
 import {
     appointment_1,
+    appointment_2,
     transformAppointmentToDTO,
 } from "../../utils/tests/objectMothers/appointmentsMother.js"
 import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
@@ -16,6 +17,33 @@ function copyDocumentWithout(document, ...args) {
 
     return copy
 }
+
+describe("GET /", () => {
+    let appointment_dto_1
+    let appointment_dto_2
+    beforeEach(async () => {
+        appointment_dto_1 = await appointmentSchema.create(
+            transformAppointmentToDTO(appointment_1)
+        )
+        appointment_dto_2 = await appointmentSchema.create(
+            transformAppointmentToDTO(appointment_2)
+        )
+
+        appointment_dto_1 = appointment_dto_1._doc
+        appointment_dto_2 = appointment_dto_1._doc
+    })
+
+    it("As patient", async () => {
+        const response = await request(patient_1).get("/appointments")
+
+        expect(response.body).toStringEqual([appointment_dto_1])
+    })
+    it("As doctor", async () => {
+        const response = await request(doctor_1).get("/appointments")
+
+        expect(response.body).toStringEqual([appointment_dto_1])
+    })
+})
 
 describe("PATCH /approval-status", () => {
     it("Unauthorized to patient", async () => {

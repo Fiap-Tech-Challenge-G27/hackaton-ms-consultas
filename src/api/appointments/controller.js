@@ -5,7 +5,7 @@ const queryPropertyMap = {
     crm: "doctorCRM",
     cpf: "patientCPF",
 }
-const queryFind = (user) => {
+const createQueryUserFilter = (user) => {
     for (const [requestProperty, queryProperty] of Object.entries(
         queryPropertyMap
     )) {
@@ -19,7 +19,7 @@ const queryFind = (user) => {
     throw Error("Didn't find 'cpf' or 'crn")
 }
 export const getAppointment = async (req, res) => {
-    const result = await appointmentSchema.find(queryFind(res.locals.user), {
+    const result = await appointmentSchema.find(createQueryUserFilter(res.locals.user), {
         __v: false,
     })
     return res.json(result)
@@ -44,7 +44,7 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
     const { approvalStatus } = req.body
 
     const result = await appointmentSchema.updateOne(
-        { _id: id },
+        { _id: id, ...createQueryUserFilter(res.locals.user) },
         { approvalStatus }
     )
 

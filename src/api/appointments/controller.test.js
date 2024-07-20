@@ -60,7 +60,7 @@ describe("PATCH /approval-status", () => {
                 .send({
                     approvalStatus: value,
                 })
-                .expect(200)
+                .expect(200, {})
 
             const { approvalStatus } = await appointmentSchema.findById(_id)
             expect(approvalStatus).toBe(value)
@@ -93,7 +93,9 @@ describe("PATCH /approval-status", () => {
             .send({
                 approvalStatus: "approved",
             })
-            .expect(404)
+            .expect(404, {
+                message: `Not found a appointments with id ${_id}`,
+            })
 
         const { approvalStatus } = await appointmentSchema.findById(_id)
         expect(approvalStatus).toBe("pending")

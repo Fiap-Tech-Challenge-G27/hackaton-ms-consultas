@@ -1,4 +1,5 @@
 import request from "../../utils/tests/custom_request"
+import { appointment_1 } from "../../utils/tests/objectMothers/appointmentsMother.js"
 import { doctor_1 } from "../../utils/tests/objectMothers/doctorsMother"
 import { patient_1 } from "../../utils/tests/objectMothers/patientsMother"
 import appointmentSchema from "./model.js"
@@ -23,10 +24,12 @@ describe("PATCH /approval-status", () => {
 
 describe("POST /", () => {
     it("Authorized to patient", async () => {
-        const response = await request(patient_1).post("/appointments").send({
-            doctorCRM: doctor_1.crm,
-            appointmentStart: "2015-03-25T12:00:00.000Z",
-        })
+        const response = await request(appointment_1.patient)
+            .post("/appointments")
+            .send({
+                doctorCRM: appointment_1.doctor.crm,
+                appointmentStart: appointment_1.appointmentStart,
+            })
 
         expect(response.statusCode).toBe(200)
         console.log(

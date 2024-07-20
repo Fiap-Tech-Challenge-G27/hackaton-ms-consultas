@@ -34,7 +34,7 @@
  *         doctorCRM: 29278-MG
  *         patientCPF: 48252687733
  *         appointmentStart: 2015-03-25T12:00:00.000Z
- *         approvalStatus: pending
+ *         approvalStatus: approved
  *         meetUrl: https://meet.google.com/bwe-mzoz-bfj
  * tags:
  *    name: Appointments
@@ -113,10 +113,17 @@ router.post(
 /**
  * @swagger
  * /appointments/{id}/approval-status:
- *   post:
+ *   patch:
  *     summary: Set a approval status the a appointment that involves the user as a doctor  
  *     tags: [Appointments]
- *     
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           pattern: '^[0-9a-fA-F]{24}$'
+ *         required: true
+ *         description: the id of appointment
  *     requestBody:
  *       required: true
  *       content:
@@ -124,16 +131,10 @@ router.post(
  *            schema:
  *              type: object
  *              properties:
- *                doctorCRM:
+ *                approvalStatus:
  *                  type: string
- *                  description: The doctor CRM
- *                appointmentStart:
- *                  type: string
- *                  format: date-time
- *                  description: The Date of start of appointment
- *              example:
- *                doctorCRM: 29278-MG
- *                appointmentStart: 2015-03-25T12:00:00.000Z
+ *                  enum: [approved, rejected]
+ *                  description: status of approval
  *     responses:
  *       200:
  *         description:  the created of the appointments

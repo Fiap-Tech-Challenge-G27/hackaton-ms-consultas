@@ -1,14 +1,14 @@
 import { Router } from "express"
-import { body, validationResult } from "express-validator"
-import { authenticate } from "../../utils/jwt"
-import { validate } from "../../utils/tests/validation"
-import { patchAppointmentApprovalStatus, postAppointment } from "./controller"
+import { body } from "express-validator"
+import { authenticate } from "../../utils/jwt/index.js"
+import { validate } from "../../utils/tests/validation.js"
+import { patchAppointmentApprovalStatus, postAppointment } from "./controller.js"
 const router = Router()
 
 router.post(
     "",
     authenticate({ roles: ["patient"] }),
-    body("doctorCRM").notEmpty(),
+    body("doctorCRM").isString(),
     validate,
     postAppointment
 )

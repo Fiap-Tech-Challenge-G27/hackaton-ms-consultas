@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken"
-import config from "../../config"
+import config from "../../config.js"
 
 const { jwtSecret } = config
 
@@ -16,9 +16,6 @@ const rolePropertyMap = {
 export const authenticate = ({ roles }) => {
     return (req, res, next) => {
         const token = extractToken(req)
-
-        if (token == null)
-            return res.status(401).json({ message: "Unauthenticated" })
 
         try {
             var decoded = jwt.verify(token, jwtSecret)

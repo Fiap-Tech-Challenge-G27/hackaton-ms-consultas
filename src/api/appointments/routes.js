@@ -36,6 +36,9 @@
  *         appointmentStart: 2015-03-25T12:00:00.000Z
  *         approvalStatus: pending
  *         meetUrl: https://meet.google.com/bwe-mzoz-bfj
+ * tags:
+ *    name: Appointments
+ *    description: The appointments managing API
  */
 
 import { Router } from "express"
@@ -52,6 +55,22 @@ const MONGO_OBJECT_ID_PATTERN = /^[0-9a-fA-F]{24}$/
 
 const router = Router()
 
+/**
+ * @swagger
+ * /appointments:
+ *   get:
+ *     summary: Lists all appointments that involves the user
+ *     tags: [Appointments]
+ *     responses:
+ *       200:
+ *         description: the list of the appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Appointment'
+*/
 router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
 
 router.post(

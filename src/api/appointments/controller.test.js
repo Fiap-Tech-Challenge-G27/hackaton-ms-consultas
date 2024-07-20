@@ -25,12 +25,9 @@ describe("GET /", () => {
         appointment_dto_1 = await appointmentSchema.create(
             transformAppointmentToDTO(appointment_1)
         )
-        appointment_dto_2 = await appointmentSchema.create(
-            transformAppointmentToDTO(appointment_2)
-        )
+        await appointmentSchema.create(transformAppointmentToDTO(appointment_2))
 
-        appointment_dto_1 = appointment_dto_1._doc
-        appointment_dto_2 = appointment_dto_1._doc
+        appointment_dto_1 = copyDocumentWithout(appointment_dto_1._doc, "__v")
     })
 
     it("As patient", async () => {

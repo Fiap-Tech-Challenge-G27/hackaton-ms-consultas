@@ -18,7 +18,9 @@ const queryFind = (user) => {
     throw Error("Didn't find 'cpf' or 'crn")
 }
 export const getAppointment = async (req, res) => {
-    const result = await appointmentSchema.find(queryFind(res.locals.user))
+    const result = await appointmentSchema.find(queryFind(res.locals.user), {
+        __v: false,
+    })
     return res.json(result)
 }
 

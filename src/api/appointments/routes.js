@@ -61,18 +61,47 @@ const router = Router()
  *   get:
  *     summary: Lists all appointments that involves the user
  *     tags: [Appointments]
- *     responses:
+ *     responses: 
  *       200:
  *         description: the list of the appointments
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: '#/components/schemas/Appointment'
+ *               $ref: '#/components/schemas/Appointment'
 */
 router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
 
+/**
+ * @swagger
+ * /appointments:
+ *   post:
+ *     summary: Creates a appointments that involves the user
+ *     tags: [Appointments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                doctorCRM:
+ *                  type: string
+ *                  description: The doctor CRM
+ *                appointmentStart:
+ *                  type: string
+ *                  format: date-time
+ *                  description: The Date of start of appointment
+ *              example:
+ *                doctorCRM: 29278-MG
+ *                appointmentStart: 2015-03-25T12:00:00.000Z
+ *     responses:
+ *       200:
+ *         description:  the created of the appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appointment'
+*/
 router.post(
     "",
     authenticate({ roles: ["patient"] }),

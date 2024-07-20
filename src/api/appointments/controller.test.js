@@ -20,12 +20,12 @@ function copyDocumentWithout(document, ...args) {
 describe("PATCH /approval-status", () => {
     it("Unauthorized to patient", async () => {
         await request(patient_1)
-            .patch("/appointments/approval-status")
+            .patch("/appointments/1234/approval-status")
             .send({})
             .expect(403)
     })
 
-    const testChangeValue = (toValue) => {
+    const testChangeValue = (value) => {
         return async () => {
             const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
@@ -34,12 +34,12 @@ describe("PATCH /approval-status", () => {
             await request(appointment_1.doctor)
                 .patch(`/appointments/${_id}/approval-status`)
                 .send({
-                    approvalStatus: toValue,
+                    approvalStatus: value,
                 })
                 .expect(200)
 
             const { approvalStatus } = await appointmentSchema.findById(_id)
-            expect(approvalStatus).toBe(toValue)
+            expect(approvalStatus).toBe(value)
         }
     }
     it("Doctor can approve", testChangeValue("approved"))

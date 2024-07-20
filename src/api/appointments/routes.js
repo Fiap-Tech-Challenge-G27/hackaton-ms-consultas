@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { body } from "express-validator"
+import { body, param } from "express-validator"
 import { authenticate } from "../../utils/jwt/index.js"
 import { validate } from "../../utils/tests/validation.js"
 import {
@@ -19,6 +19,9 @@ router.post(
 router.patch(
     "/:id/approval-status",
     authenticate({ roles: ["doctor"] }),
+    body("approvalStatus").isString(),
+    param("id").isString(),
+    validate,
     patchAppointmentApprovalStatus
 )
 

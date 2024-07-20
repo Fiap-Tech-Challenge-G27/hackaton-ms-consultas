@@ -17,7 +17,7 @@ router.post(
     postAppointment
 )
 router.patch(
-    "/approval-status",
+    "/:id/approval-status",
     authenticate({ roles: ["doctor"] }),
     patchAppointmentApprovalStatus
 )

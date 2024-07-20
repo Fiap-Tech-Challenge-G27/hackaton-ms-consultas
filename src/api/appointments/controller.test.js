@@ -24,14 +24,27 @@ describe("PATCH /approval-status", () => {
             .send({})
             .expect(403)
     })
-    it("Authorized to doctor", async () => {
-        const response = await request(doctor_1)
-            .patch("/appointments/approval-status")
-            .send({})
 
-        expect(response.statusCode).not.toBe(401)
-        expect(response.statusCode).not.toBe(403)
-    })
+    const testChangeValue = (toValue) => {
+        return async () => {
+            const appointmentDTO = transformAppointmentToDTO(appointment_1)
+
+            const { _id } = await appointmentSchema.create(appointmentDTO)
+
+            await request(appointment_1.doctor)
+                .patch(`/appointments/${_id}/approval-status`)
+                .send({
+                    approvalStatus: toValue,
+                })
+                .expect(200)
+
+            const { approvalStatus } = await appointmentSchema.findById(_id)
+            expect(approvalStatus).toBe(toValue)
+        }
+    }
+    it("Doctor can approve", testChangeValue("approved"))
+
+    it("Doctor can reject", testChangeValue("rejected"))
 })
 
 describe("POST /", () => {

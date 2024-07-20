@@ -53,16 +53,21 @@ describe("PATCH /approval-status", () => {
         return async () => {
             const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
-            const { _id } = await appointmentSchema.create(appointmentDTO)
+            const createdAppointment = await appointmentSchema.create(appointmentDTO)
+
+            let expectedBody = copyDocumentWithout(createdAppointment._doc, "__v")
+            expectedBody["approvalStatus"] = value
+            expectedBody["appointmentStart"] = expectedBody["appointmentStart"].toISOString()
+            expectedBody["_id"] = expectedBody["_id"].toString()
 
             await request(appointment_1.doctor)
-                .patch(`/appointments/${_id}/approval-status`)
+                .patch(`/appointments/${createdAppointment._id}/approval-status`)
                 .send({
                     approvalStatus: value,
                 })
-                .expect(200, {})
+                .expect(200, expectedBody)
 
-            const { approvalStatus } = await appointmentSchema.findById(_id)
+            const { approvalStatus } = await appointmentSchema.findById(createdAppointment._id)
             expect(approvalStatus).toBe(value)
         }
     }

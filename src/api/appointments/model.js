@@ -8,16 +8,17 @@ const appointmentSchema = new Schema({
     patientCPF: {
         type: String,
     },
-    createdAt: {
+    appointmentStart: {
         type: Date,
-        default: Date.now,
-        expires: 3600,
     },
     approvalStatus: {
         type: String,
         enum: ["pending", "approved", "rejected"],
-        default: "user",
+        default: "pending",
     },
 })
 
 const model = mongoose.model("Appointment", appointmentSchema)
+
+export const schema = model.schema
+export default model

@@ -30,6 +30,7 @@ export const authenticate = ({ roles }) => {
                         .status(403)
                         .json({ message: `Unauthorized to ${role}` })
                 }
+                res.locals.user = decoded
                 return next()
             }
         }

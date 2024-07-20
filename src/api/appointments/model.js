@@ -17,8 +17,8 @@ const appointmentSchema = new Schema({
         default: "pending",
     },
     meetUrl: {
-        type: String
-    }
+        type: String,
+    },
 })
 
 const model = mongoose.model("Appointment", appointmentSchema)

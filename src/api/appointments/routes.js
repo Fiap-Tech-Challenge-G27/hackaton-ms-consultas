@@ -61,14 +61,14 @@ const router = Router()
  *   get:
  *     summary: Lists all appointments that involves the user
  *     tags: [Appointments]
- *     responses: 
+ *     responses:
  *       200:
  *         description: the list of the appointments
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Appointment'
-*/
+ */
 router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
 
 /**
@@ -101,7 +101,7 @@ router.get("", authenticate({ roles: ["patient", "doctor"] }), getAppointment)
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Appointment'
-*/
+ */
 router.post(
     "",
     authenticate({ roles: ["patient"] }),
@@ -114,7 +114,7 @@ router.post(
  * @swagger
  * /appointments/{id}/approval-status:
  *   patch:
- *     summary: Set a approval status the a appointment that involves the user as a doctor  
+ *     summary: Set a approval status the a appointment that involves the user as a doctor
  *     tags: [Appointments]
  *     parameters:
  *       - in: path
@@ -142,7 +142,7 @@ router.post(
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/Appointment'
-*/
+ */
 router.patch(
     "/:id/approval-status",
     authenticate({ roles: ["doctor"] }),

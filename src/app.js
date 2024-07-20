@@ -11,8 +11,7 @@ const options = {
         info: {
             title: "MS-Consultas",
             version: "0.1.0",
-            description:
-                "A microservice to appointments management",
+            description: "A microservice to appointments management",
             license: {
                 name: "ISC",
                 url: "https://opensource.org/license/isc-license-txt",
@@ -28,7 +27,12 @@ const options = {
 }
 
 const specs = swaggerJsdoc(options)
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs),  swaggerUi.setup(specs, { explorer: true }))
+app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs),
+    swaggerUi.setup(specs, { explorer: true })
+)
 
 app.use(express.json())
 app.use(express.text())

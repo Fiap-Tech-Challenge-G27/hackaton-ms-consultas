@@ -11,9 +11,9 @@ export default {
     port: process.env.PORT || 8080,
     jwtSecret: requireProcessEnv("JWT_SECRET"),
     mongo: {
-      uri: requireProcessEnv('MONGODB_URI'),
-      options: {
-        debug: false,
-      },
+        uri: requireProcessEnv("MONGODB_URI"),
+        options: {
+            debug: false,
+        },
     },
 }

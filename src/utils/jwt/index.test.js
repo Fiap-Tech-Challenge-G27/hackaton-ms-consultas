@@ -23,7 +23,7 @@ function mockRes() {
     })
     const res = {
         status: statusMock,
-        locals: {}
+        locals: {},
     }
 
     return { jsonMock, statusMock, res }

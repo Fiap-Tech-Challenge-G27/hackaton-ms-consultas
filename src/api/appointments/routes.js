@@ -1,3 +1,43 @@
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Appointment:
+ *       type: object
+ *       required:
+ *         - title
+ *         - author
+ *         - finished
+ *       properties:
+ *         id:
+ *           type: string
+ *           description: The auto-generated id of appointment
+ *         doctorCRM:
+ *           type: string
+ *           description: The doctor CRM
+ *         patientCPF:
+ *           type: string
+ *           description: The patient CPF
+ *         appointmentStart:
+ *            type: string
+ *            format: date-time
+ *            description: The Date of start of appointment
+ *         approvalStatus:
+ *           type: string
+ *           enum: [pending, approved, rejected]
+ *           description: status of approval
+ *         meetUrl:
+ *           type: string
+ *           description: Google Meet URL
+ *       example:
+ *         id: 669bf86d740be2f57eebff63
+ *         doctorCRM: 29278-MG
+ *         patientCPF: 48252687733
+ *         appointmentStart: 2015-03-25T12:00:00.000Z
+ *         approvalStatus: pending
+ *         meetUrl: https://meet.google.com/bwe-mzoz-bfj
+ */
+
 import { Router } from "express"
 import { body, param } from "express-validator"
 import { authenticate } from "../../utils/jwt/index.js"

@@ -15,7 +15,7 @@ const options = {
                 "A microservice to appointments management",
             license: {
                 name: "ISC",
-                url: "https://spdx.org/licenses/MIT.html",
+                url: "https://opensource.org/license/isc-license-txt",
             },
         },
         servers: [
@@ -32,7 +32,6 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs),  swaggerUi.setup(s
 
 app.use(express.json())
 app.use(express.text())
-app.use(express.urlencoded())
 app.use((err, req, res, next) => {
     console.log(err)
 })

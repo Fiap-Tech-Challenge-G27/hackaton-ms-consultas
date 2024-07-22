@@ -16,6 +16,7 @@ const createQueryUserFilter = (user) => {
         }
     }
 
+    /* istanbul ignore next */
     throw Error("Didn't find 'cpf' or 'crn")
 }
 export const getAppointment = async (req, res) => {

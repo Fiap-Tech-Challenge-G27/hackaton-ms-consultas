@@ -64,3 +64,19 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
     })
     return res.status(200).json(updatedDocument)
 }
+
+export const patchAppointmentCPF = async (req, res) => {
+    const oldCPF = res.locals.user.cpf
+    const newCPF = req.body.cpf
+
+    await appointmentSchema.updateMany(
+        {
+            patientCPF: oldCPF,
+        },
+        {
+            patientCPF: newCPF,
+        }
+    )
+
+    return res.status(200).json({})
+}

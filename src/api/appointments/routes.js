@@ -48,6 +48,7 @@ import { validate } from "../../utils/tests/validation.js"
 import {
     getAppointment,
     patchAppointmentApprovalStatus,
+    patchAppointmentCPF,
     postAppointment,
 } from "./controller.js"
 
@@ -152,12 +153,11 @@ router.patch(
     patchAppointmentApprovalStatus
 )
 
-export default router
-
 router.patch(
     "/cpf",
     authenticate({ roles: ["patient"] }),
-    body("cpf").isString()
+    body("cpf").isString(),
+    patchAppointmentCPF
 )
 
 router.patch(
@@ -165,3 +165,5 @@ router.patch(
     authenticate({ roles: ["patient"] }),
     body("crn").isString()
 )
+
+export default router

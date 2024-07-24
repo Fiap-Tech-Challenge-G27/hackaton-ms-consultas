@@ -136,5 +136,27 @@ describe("POST /", () => {
 })
 
 describe("PATCH /cpf", () => {
-    it("Update CPF", () => {})
+    it("Authorized to patient", async () => {
+        const appointmentDTO = transformAppointmentToDTO(appointment_1)
+        const newCPF = "new cpf"
+
+        await appointmentSchema.create(appointmentDTO)
+
+        await request(appointment_1.patient)
+            .patch(`/appointments/cpf`)
+            .send({
+                cpf: newCPF,
+            })
+            .expect(200)
+
+        const document = await appointmentSchema.findOne()
+
+        expect(document["patientCPF"]).toBe(newCPF)
+    })
+
+    it("Unauthorized to doctor", async () => {
+        await request(appointment_1.doctor)
+            .patch("/appointments/cpf")
+            .expect(403)
+    })
 })

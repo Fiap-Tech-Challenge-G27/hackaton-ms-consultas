@@ -170,8 +170,13 @@ router.patch(
  *                cpf:
  *                  type: string
  *                  description: The new CPF
- *              example:
- *                cpf: 17528664014
+ *            examples:
+ *              update:
+ *                value:
+ *                  cpf: 17528664014
+ *              delete:
+ *                value:
+ *                  cpf: null
  */
 router.patch(
     "/cpf",
@@ -185,7 +190,7 @@ router.patch(
  * @swagger
  * /appointments/crm:
  *   patch:
- *     summary: Changes the crm of all appointments that involves the user (patient only)
+ *     summary: Changes the crm of all appointments that involves the user (doctor only)
  *     tags: [Appointments]
  *     requestBody:
  *       required: true
@@ -197,8 +202,13 @@ router.patch(
  *                crm:
  *                  type: string
  *                  description: The new crm
- *              example:
- *                crm: 29279-MG
+ *            examples:
+ *              update:
+ *                value:
+ *                  crm: 29279-MG
+ *              delete:
+ *                value:
+ *                  crm: null
  */
 router.patch(
     "/crm",

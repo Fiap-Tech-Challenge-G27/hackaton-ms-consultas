@@ -153,3 +153,15 @@ router.patch(
 )
 
 export default router
+
+router.patch(
+    "/cpf",
+    authenticate({ roles: ["patient"] }),
+    body("cpf").isString()
+)
+
+router.patch(
+    "/crn",
+    authenticate({ roles: ["patient"] }),
+    body("crn").isString()
+)

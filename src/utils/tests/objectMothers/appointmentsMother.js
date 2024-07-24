@@ -1,3 +1,4 @@
+import { copyDocumentWithout } from "../../general.js"
 import { doctor_1, doctor_2 } from "./doctorsMother"
 import { patient_1, patient_2 } from "./patientsMother"
 
@@ -7,6 +8,14 @@ export const transformAppointmentToDTO = (appointment) => {
         appointmentStart: appointment.appointmentStart,
         patientCPF: appointment.patient.cpf,
     }
+}
+
+export const transformAppointmentToView = (appointment) => {
+    let result = copyDocumentWithout(appointment, "__v")
+    result["appointmentStart"] = result["appointmentStart"].toISOString()
+    result["_id"] = result["_id"].toString()
+
+    return result
 }
 
 export const appointment_1 = {

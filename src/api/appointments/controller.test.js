@@ -6,6 +6,7 @@ import {
     appointment_1,
     appointment_2,
     transformAppointmentToDTO,
+    transformAppointmentToView
 } from "../../utils/tests/objectMothers/appointmentsMother.js"
 import {
     doctor_1,
@@ -55,15 +56,9 @@ describe("PATCH /approval-status", () => {
 
             const createdAppointment =
                 await appointmentSchema.create(appointmentDTO)
-
-            let expectedBody = copyDocumentWithout(
-                createdAppointment._doc,
-                "__v"
-            )
+            
+            const expectedBody = transformAppointmentToView(createdAppointment._doc)
             expectedBody["approvalStatus"] = value
-            expectedBody["appointmentStart"] =
-                expectedBody["appointmentStart"].toISOString()
-            expectedBody["_id"] = expectedBody["_id"].toString()
 
             await request(appointment_1.doctor)
                 .patch(
@@ -135,5 +130,11 @@ describe("POST /", () => {
     })
     it("Unauthorized to doctor", async () => {
         await request(doctor_1).post("/appointments").send({}).expect(403)
+    })
+})
+
+describe("PATCH /cpf", () => {
+    it("Update CPF", () => {
+
     })
 })

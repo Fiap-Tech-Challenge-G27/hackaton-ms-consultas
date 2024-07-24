@@ -166,23 +166,26 @@ describe("PATCH /cpf", () => {
 })
 
 describe("PATCH /crm", () => {
-    it("Authorized to doctor", async () => {
-        const appointmentDTO = transformAppointmentToDTO(appointment_1)
-        const newCRM = "new crm"
+    const testChangeCRM = (newCRM) => {
+        return async () => {
+            const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
-        await appointmentSchema.create(appointmentDTO)
+            await appointmentSchema.create(appointmentDTO)
 
-        await request(appointment_1.doctor)
-            .patch(`/appointments/crm`)
-            .send({
-                crm: newCRM,
-            })
-            .expect(200)
+            await request(appointment_1.doctor)
+                .patch(`/appointments/crm`)
+                .send({
+                    crm: newCRM,
+                })
+                .expect(200)
 
-        const document = await appointmentSchema.findOne()
+            const document = await appointmentSchema.findOne()
 
-        expect(document["doctorCRM"]).toBe(newCRM)
-    })
+            expect(document["doctorCRM"]).toBe(newCRM)
+        }
+    }
+    it("Authorized to doctor change", testChangeCRM("new crm"))
+    it("Authorized to doctor delete", testChangeCRM(null))
 
     it("Unauthorized to patient", async () => {
         await request(appointment_1.patient)

@@ -71,7 +71,7 @@ export const patchAppointmentCPF = async (req, res) => {
             patientCPF: res.locals.user.cpf,
         },
         {
-            patientCPF: req.body.cpf,
+            patientCPF: req.body.cpf || null,
         }
     )
 
@@ -84,7 +84,7 @@ export const patchAppointmentCRN = async (req, res) => {
             doctorCRM: res.locals.user.crm,
         },
         {
-            doctorCRM: req.body.crm,
+            doctorCRM: req.body.crm || null,
         }
     )
 

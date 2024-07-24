@@ -49,8 +49,8 @@ import {
     getAppointment,
     patchAppointmentApprovalStatus,
     patchAppointmentCPF,
-    postAppointment,
     patchAppointmentCRN,
+    postAppointment,
 } from "./controller.js"
 
 const MONGO_OBJECT_ID_PATTERN = /^[0-9a-fA-F]{24}$/
@@ -176,7 +176,8 @@ router.patch(
 router.patch(
     "/cpf",
     authenticate({ roles: ["patient"] }),
-    body("cpf").isString(),
+    body("cpf").isString().optional({ nullable: true }),
+    validate,
     patchAppointmentCPF
 )
 
@@ -202,7 +203,8 @@ router.patch(
 router.patch(
     "/crm",
     authenticate({ roles: ["doctor"] }),
-    body("crm").isString(),
+    body("crm").isString().optional({ nullable: true }),
+    validate,
     patchAppointmentCRN
 )
 

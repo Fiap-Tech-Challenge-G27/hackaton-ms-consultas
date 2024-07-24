@@ -136,23 +136,27 @@ describe("POST /", () => {
 })
 
 describe("PATCH /cpf", () => {
-    it("Authorized to patient", async () => {
-        const appointmentDTO = transformAppointmentToDTO(appointment_1)
-        const newCPF = "new cpf"
+    const testChangeCPF = (newCPF) => {
+        return async () => {
+            const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
-        await appointmentSchema.create(appointmentDTO)
+            await appointmentSchema.create(appointmentDTO)
 
-        await request(appointment_1.patient)
-            .patch(`/appointments/cpf`)
-            .send({
-                cpf: newCPF,
-            })
-            .expect(200)
+            await request(appointment_1.patient)
+                .patch(`/appointments/cpf`)
+                .send({
+                    cpf: newCPF,
+                })
+                .expect(200)
 
-        const document = await appointmentSchema.findOne()
+            const document = await appointmentSchema.findOne()
 
-        expect(document["patientCPF"]).toBe(newCPF)
-    })
+            expect(document["patientCPF"]).toBe(newCPF)
+        }
+    }
+    it("Authorized to patient change", testChangeCPF("new cpf"))
+
+    it("Authorized to patient delete", testChangeCPF(null))
 
     it("Unauthorized to doctor", async () => {
         await request(appointment_1.doctor)
@@ -186,4 +190,3 @@ describe("PATCH /crm", () => {
             .expect(403)
     })
 })
-

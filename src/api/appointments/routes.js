@@ -50,6 +50,7 @@ import {
     patchAppointmentApprovalStatus,
     patchAppointmentCPF,
     postAppointment,
+    patchAppointmentCRN,
 } from "./controller.js"
 
 const MONGO_OBJECT_ID_PATTERN = /^[0-9a-fA-F]{24}$/
@@ -161,9 +162,10 @@ router.patch(
 )
 
 router.patch(
-    "/crn",
-    authenticate({ roles: ["patient"] }),
-    body("crn").isString()
+    "/crm",
+    authenticate({ roles: ["doctor"] }),
+    body("crm").isString(),
+    patchAppointmentCRN
 )
 
 export default router

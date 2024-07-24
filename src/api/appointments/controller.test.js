@@ -160,3 +160,30 @@ describe("PATCH /cpf", () => {
             .expect(403)
     })
 })
+
+describe("PATCH /crm", () => {
+    it("Authorized to doctor", async () => {
+        const appointmentDTO = transformAppointmentToDTO(appointment_1)
+        const newCRM = "new crm"
+
+        await appointmentSchema.create(appointmentDTO)
+
+        await request(appointment_1.doctor)
+            .patch(`/appointments/crm`)
+            .send({
+                crm: newCRM,
+            })
+            .expect(200)
+
+        const document = await appointmentSchema.findOne()
+
+        expect(document["doctorCRM"]).toBe(newCRM)
+    })
+
+    it("Unauthorized to patient", async () => {
+        await request(appointment_1.patient)
+            .patch("/appointments/crm")
+            .expect(403)
+    })
+})
+

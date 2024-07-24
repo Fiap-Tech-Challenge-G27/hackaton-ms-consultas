@@ -66,15 +66,25 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
 }
 
 export const patchAppointmentCPF = async (req, res) => {
-    const oldCPF = res.locals.user.cpf
-    const newCPF = req.body.cpf
-
     await appointmentSchema.updateMany(
         {
-            patientCPF: oldCPF,
+            patientCPF: res.locals.user.cpf,
         },
         {
-            patientCPF: newCPF,
+            patientCPF: req.body.cpf,
+        }
+    )
+
+    return res.status(200).json({})
+}
+
+export const patchAppointmentCRN = async (req, res) => {
+    await appointmentSchema.updateMany(
+        {
+            doctorCRM: res.locals.user.crm,
+        },
+        {
+            doctorCRM: req.body.crm,
         }
     )
 

@@ -154,6 +154,25 @@ router.patch(
     patchAppointmentApprovalStatus
 )
 
+/**
+ * @swagger
+ * /appointments/cpf:
+ *   patch:
+ *     summary: Changes the CPF of all appointments that involves the user (patient only)
+ *     tags: [Appointments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                cpf:
+ *                  type: string
+ *                  description: The new CPF
+ *              example:
+ *                cpf: 17528664014
+ */
 router.patch(
     "/cpf",
     authenticate({ roles: ["patient"] }),
@@ -161,6 +180,25 @@ router.patch(
     patchAppointmentCPF
 )
 
+/**
+ * @swagger
+ * /appointments/crm:
+ *   patch:
+ *     summary: Changes the crm of all appointments that involves the user (patient only)
+ *     tags: [Appointments]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                crm:
+ *                  type: string
+ *                  description: The new crm
+ *              example:
+ *                crm: 29279-MG
+ */
 router.patch(
     "/crm",
     authenticate({ roles: ["doctor"] }),

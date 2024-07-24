@@ -6,7 +6,7 @@ import {
     appointment_1,
     appointment_2,
     transformAppointmentToDTO,
-    transformAppointmentToView
+    transformAppointmentToView,
 } from "../../utils/tests/objectMothers/appointmentsMother.js"
 import {
     doctor_1,
@@ -27,18 +27,18 @@ describe("GET /", () => {
         })
         await appointmentSchema.create(transformAppointmentToDTO(appointment_2))
 
-        appointment_dto_1 = copyDocumentWithout(appointment_dto_1._doc, "__v")
+        appointment_dto_1 = transformAppointmentToView(appointment_dto_1._doc)
     })
 
     it("As patient", async () => {
-        const response = await request(patient_1).get("/appointments")
-
-        expect(response.body).toStringEqual([appointment_dto_1])
+        await request(patient_1)
+            .get("/appointments")
+            .expect(200, [appointment_dto_1])
     })
     it("As doctor", async () => {
-        const response = await request(doctor_1).get("/appointments")
-
-        expect(response.body).toStringEqual([appointment_dto_1])
+        await request(doctor_1)
+            .get("/appointments")
+            .expect(200, [appointment_dto_1])
     })
 })
 
@@ -56,8 +56,10 @@ describe("PATCH /approval-status", () => {
 
             const createdAppointment =
                 await appointmentSchema.create(appointmentDTO)
-            
-            const expectedBody = transformAppointmentToView(createdAppointment._doc)
+
+            const expectedBody = transformAppointmentToView(
+                createdAppointment._doc
+            )
             expectedBody["approvalStatus"] = value
 
             await request(appointment_1.doctor)
@@ -134,7 +136,5 @@ describe("POST /", () => {
 })
 
 describe("PATCH /cpf", () => {
-    it("Update CPF", () => {
-
-    })
+    it("Update CPF", () => {})
 })

@@ -52,17 +52,3 @@ export async function hasOneDocumentWith(schema, find) {
         pass: true,
     }
 }
-
-export async function toStringEqual(actual, expected) {
-    if (actual.toString() == expected.toString()) {
-        return {
-            message: () => `${actual} == ${expected}`,
-            pass: true,
-        }
-    }
-
-    return {
-        message: () => `${actual} == ${expected}`,
-        pass: false,
-    }
-}

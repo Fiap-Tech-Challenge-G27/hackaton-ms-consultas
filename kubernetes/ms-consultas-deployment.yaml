@@ -33,7 +33,7 @@ spec:
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
-                  name: documentdb-secret
+                  name: documentdb-secret-consultas
                   key: urlConsultas
           volumeMounts:
             - name: secrets-store-inline

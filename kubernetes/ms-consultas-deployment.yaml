@@ -30,6 +30,8 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 10
           env:
+            - name: JWT_SECRET
+              value: "secret1234"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:

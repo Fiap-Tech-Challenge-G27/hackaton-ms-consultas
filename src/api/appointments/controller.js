@@ -44,14 +44,24 @@ export const postAppointment = async (req, res) => {
 }
 
 export const patchAppointmentConfirmation = async (req, res) => {
+    const createUpdateObject = () => {
+        const { approvalStatus, justification } = req.body
+
+        const result = { approvalStatus }
+        if (justification) {
+            result["justification"] = justification
+        }
+
+        return result
+    }
     const { id } = req.params
-    const { approvalStatus } = req.body
 
     const queryFilter = { _id: id, ...createQueryUserFilter(res.locals.user) }
 
-    const result = await appointmentSchema.updateOne(queryFilter, {
-        approvalStatus,
-    })
+    const result = await appointmentSchema.updateOne(
+        queryFilter,
+        createUpdateObject()
+    )
 
     if (result["matchedCount"] == 0) {
         return res.status(404).json({

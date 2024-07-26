@@ -42,10 +42,10 @@ describe("GET /", () => {
     })
 })
 
-describe("PATCH /approval-status", () => {
+describe("PATCH /{_id}/confirmation", () => {
     it("Unauthorized to patient", async () => {
         await request(patient_1)
-            .patch("/appointments/1234/approval-status")
+            .patch("/appointments/1234/confirmation")
             .send({})
             .expect(403, { message: "Unauthorized to patient" })
     })
@@ -64,7 +64,7 @@ describe("PATCH /approval-status", () => {
 
             await request(appointment_1.doctor)
                 .patch(
-                    `/appointments/${createdAppointment._id}/approval-status`
+                    `/appointments/${createdAppointment._id}/confirmation`
                 )
                 .send({
                     approvalStatus: value,
@@ -85,7 +85,7 @@ describe("PATCH /approval-status", () => {
         const id = new mongoose.Types.ObjectId().toString()
 
         await request(doctor_1)
-            .patch(`/appointments/${id}/approval-status`)
+            .patch(`/appointments/${id}/confirmation`)
             .send({
                 approvalStatus: "approved",
             })
@@ -100,7 +100,7 @@ describe("PATCH /approval-status", () => {
         const { _id } = await appointmentSchema.create(appointmentDTO)
 
         await request(doctor_2)
-            .patch(`/appointments/${_id}/approval-status`)
+            .patch(`/appointments/${_id}/confirmation`)
             .send({
                 approvalStatus: "approved",
             })

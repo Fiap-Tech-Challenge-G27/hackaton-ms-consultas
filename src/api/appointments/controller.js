@@ -43,7 +43,7 @@ export const postAppointment = async (req, res) => {
     return res.status(200).json(copyDocumentWithout(result._doc, "__v"))
 }
 
-export const patchAppointmentApprovalStatus = async (req, res) => {
+export const patchAppointmentConfirmation = async (req, res) => {
     const { id } = req.params
     const { approvalStatus } = req.body
 

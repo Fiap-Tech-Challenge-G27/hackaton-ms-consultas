@@ -47,7 +47,7 @@ import { authenticate } from "../../utils/jwt/index.js"
 import { validate } from "../../utils/tests/validation.js"
 import {
     getAppointment,
-    patchAppointmentApprovalStatus,
+    patchAppointmentConfirmation,
     patchAppointmentCPF,
     patchAppointmentCRN,
     postAppointment,
@@ -114,7 +114,7 @@ router.post(
 )
 /**
  * @swagger
- * /appointments/{id}/approval-status:
+ * /appointments/{id}/confirmation:
  *   patch:
  *     summary: Set a approval status the a appointment that involves the user as a doctor
  *     tags: [Appointments]
@@ -146,12 +146,12 @@ router.post(
  *               $ref: '#/components/schemas/Appointment'
  */
 router.patch(
-    "/:id/approval-status",
+    "/:id/confirmation",
     authenticate({ roles: ["doctor"] }),
     body("approvalStatus").isString().isIn(["approved", "rejected"]),
     param("id").isString().matches(MONGO_OBJECT_ID_PATTERN),
     validate,
-    patchAppointmentApprovalStatus
+    patchAppointmentConfirmation
 )
 
 /**

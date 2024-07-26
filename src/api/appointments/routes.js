@@ -29,9 +29,6 @@
  *         meetUrl:
  *           type: string
  *           description: Google Meet URL
- *         justification:
- *           type: string
- *           description: Justification for rejecting the appointment
  *       example:
  *         id: 669bf86d740be2f57eebff63
  *         doctorCRM: 29278-MG
@@ -50,7 +47,7 @@ import { authenticate } from "../../utils/jwt/index.js"
 import { validate } from "../../utils/tests/validation.js"
 import {
     getAppointment,
-    patchAppointmentConfirmation,
+    patchAppointmentApprovalStatus,
     patchAppointmentCPF,
     patchAppointmentCRN,
     postAppointment,
@@ -117,7 +114,7 @@ router.post(
 )
 /**
  * @swagger
- * /appointments/{id}/confirmation:
+ * /appointments/{id}/approval-status:
  *   patch:
  *     summary: Set a approval status the a appointment that involves the user as a doctor
  *     tags: [Appointments]
@@ -139,11 +136,7 @@ router.post(
  *                approvalStatus:
  *                  type: string
  *                  enum: [approved, rejected]
- *                  required: true
  *                  description: status of approval
- *                justification:
- *                  type: string
- *                  description: Justification for rejecting the appointment
  *     responses:
  *       200:
  *         description:  the created of the appointments
@@ -153,13 +146,12 @@ router.post(
  *               $ref: '#/components/schemas/Appointment'
  */
 router.patch(
-    "/:id/confirmation",
+    "/:id/approval-status",
     authenticate({ roles: ["doctor"] }),
     body("approvalStatus").isString().isIn(["approved", "rejected"]),
-    body("justification").isString().optional(),
     param("id").isString().matches(MONGO_OBJECT_ID_PATTERN),
     validate,
-    patchAppointmentConfirmation
+    patchAppointmentApprovalStatus
 )
 
 /**

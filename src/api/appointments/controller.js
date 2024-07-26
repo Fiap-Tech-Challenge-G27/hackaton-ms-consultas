@@ -43,25 +43,15 @@ export const postAppointment = async (req, res) => {
     return res.status(200).json(copyDocumentWithout(result._doc, "__v"))
 }
 
-export const patchAppointmentConfirmation = async (req, res) => {
-    const createUpdateObject = () => {
-        const { approvalStatus, justification } = req.body
-
-        const result = { approvalStatus }
-        if (justification) {
-            result["justification"] = justification
-        }
-
-        return result
-    }
+export const patchAppointmentApprovalStatus = async (req, res) => {
     const { id } = req.params
+    const { approvalStatus } = req.body
 
     const queryFilter = { _id: id, ...createQueryUserFilter(res.locals.user) }
 
-    const result = await appointmentSchema.updateOne(
-        queryFilter,
-        createUpdateObject()
-    )
+    const result = await appointmentSchema.updateOne(queryFilter, {
+        approvalStatus,
+    })
 
     if (result["matchedCount"] == 0) {
         return res.status(404).json({

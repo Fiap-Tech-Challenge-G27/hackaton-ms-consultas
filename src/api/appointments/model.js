@@ -11,9 +11,6 @@ const appointmentSchema = new Schema({
     appointmentStart: {
         type: Date,
     },
-    justification: {
-        type: String,
-    },
     approvalStatus: {
         type: String,
         enum: ["pending", "approved", "rejected"],

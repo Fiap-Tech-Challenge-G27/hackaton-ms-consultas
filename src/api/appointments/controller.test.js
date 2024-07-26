@@ -42,44 +42,34 @@ describe("GET /", () => {
     })
 })
 
-describe("PATCH /{_id}/confirmation", () => {
+describe("PATCH /approval-status", () => {
     it("Unauthorized to patient", async () => {
         await request(patient_1)
-            .patch("/appointments/1234/confirmation")
+            .patch("/appointments/1234/approval-status")
             .send({})
             .expect(403, { message: "Unauthorized to patient" })
     })
 
-    const testChangeValue = (value, justification = null) => {
-        const buildRequestBody = () => {
-            const result = {
-                approvalStatus: value,
-            }
-
-            if (justification !== null) {
-                result["justification"] = justification
-            }
-
-            return result
-        }
+    const testChangeValue = (value) => {
         return async () => {
             const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
             const createdAppointment =
                 await appointmentSchema.create(appointmentDTO)
 
-            const expectedResponseBody = transformAppointmentToView(createdAppointment._doc)
-            expectedResponseBody["approvalStatus"] = value
-
-            if (justification !== null) {
-                expectedResponseBody["justification"] = justification
-            }
-
+            const expectedBody = transformAppointmentToView(
+                createdAppointment._doc
+            )
+            expectedBody["approvalStatus"] = value
 
             await request(appointment_1.doctor)
-                .patch(`/appointments/${createdAppointment._id}/confirmation`)
-                .send(buildRequestBody())
-                .expect(200, expectedResponseBody)
+                .patch(
+                    `/appointments/${createdAppointment._id}/approval-status`
+                )
+                .send({
+                    approvalStatus: value,
+                })
+                .expect(200, expectedBody)
 
             const { approvalStatus } = await appointmentSchema.findById(
                 createdAppointment._id
@@ -89,18 +79,13 @@ describe("PATCH /{_id}/confirmation", () => {
     }
     it("Doctor can approve", testChangeValue("approved"))
 
-    it("Doctor can reject without justification", testChangeValue("rejected"))
-
-    it(
-        "Doctor can reject with justification",
-        testChangeValue("rejected", "justification")
-    )
+    it("Doctor can reject", testChangeValue("rejected"))
 
     it("Doctor when don't exists", async () => {
         const id = new mongoose.Types.ObjectId().toString()
 
         await request(doctor_1)
-            .patch(`/appointments/${id}/confirmation`)
+            .patch(`/appointments/${id}/approval-status`)
             .send({
                 approvalStatus: "approved",
             })
@@ -115,7 +100,7 @@ describe("PATCH /{_id}/confirmation", () => {
         const { _id } = await appointmentSchema.create(appointmentDTO)
 
         await request(doctor_2)
-            .patch(`/appointments/${_id}/confirmation`)
+            .patch(`/appointments/${_id}/approval-status`)
             .send({
                 approvalStatus: "approved",
             })

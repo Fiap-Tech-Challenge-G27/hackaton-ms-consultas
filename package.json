@@ -6,8 +6,8 @@
     "type": "module",
     "scripts": {
         "start": "node src/server.js",
-        "test": "NODE_OPTIONS=--experimental-vm-modules  jest --verbose",
-        "coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+        "test": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest --verbose",
+        "coverage": "NODE_OPTIONS=--experimental-vm-modules NODE_ENV=test jest --coverage",
         "prettier": "prettier --write src"
     },
     "repository": {

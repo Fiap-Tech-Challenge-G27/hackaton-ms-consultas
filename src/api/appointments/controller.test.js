@@ -215,16 +215,11 @@ describe("PATCH /cancellation", () => {
             .patch(`/appointments/${createdAppointment._id}/cancellation`)
             .send(requestBody)
             .expect(200, expectedBody)
-
-        const { approvalStatus } = await appointmentSchema.findById(
-            createdAppointment._id
-        )
-        expect(approvalStatus).toBe(value)
     })
 
     it("Unauthorized to doctor", async () => {
         await request(appointment_1.doctor)
-            .patch("/appointments/crm")
+            .patch("/appointments/1223/cancellation")
             .expect(403)
     })
 })

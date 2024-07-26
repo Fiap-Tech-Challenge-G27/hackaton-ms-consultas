@@ -94,3 +94,17 @@ export const patchAppointmentCRN = async (req, res) => {
 
     return res.status(200).json({})
 }
+
+export const patchAppointmentCancellation = async (req, res) => {
+    const { id } = req.params
+    const { cancellation, cancellationJustification } = req.body
+
+    const queryFilter = { _id: id, ...createQueryUserFilter(res.locals.user) }
+
+    const result = await appointmentSchema.updateOne(queryFilter, {
+        cancellation,
+        cancellationJustification,
+    })
+
+    return await uniquePatchReturn(res, result, id)
+}

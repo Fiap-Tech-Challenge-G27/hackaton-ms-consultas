@@ -50,6 +50,7 @@ import {
     patchAppointmentApprovalStatus,
     patchAppointmentCPF,
     patchAppointmentCRN,
+    patchAppointmentCancellation,
     postAppointment,
 } from "./controller.js"
 
@@ -223,7 +224,8 @@ router.patch(
     authenticate({ roles: ["patient"] }),
     body("cancellation").isBoolean(),
     body("cancellationJustification").isString(),
-    validate
+    validate,
+    patchAppointmentCancellation
 )
 
 export default router

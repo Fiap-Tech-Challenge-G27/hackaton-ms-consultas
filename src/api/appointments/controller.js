@@ -43,6 +43,19 @@ export const postAppointment = async (req, res) => {
     return res.status(200).json(copyDocumentWithout(result._doc, "__v"))
 }
 
+const uniquePatchReturn = async (res, updateOneResponse, id) => {
+    if (updateOneResponse["matchedCount"] == 0) {
+        return res.status(404).json({
+            message: `Not found a appointments with id ${id}`,
+        })
+    }
+
+    const updatedDocument = await appointmentSchema.findById(id, {
+        __v: false,
+    })
+    return res.status(200).json(updatedDocument)
+}
+
 export const patchAppointmentApprovalStatus = async (req, res) => {
     const { id } = req.params
     const { approvalStatus } = req.body
@@ -53,16 +66,7 @@ export const patchAppointmentApprovalStatus = async (req, res) => {
         approvalStatus,
     })
 
-    if (result["matchedCount"] == 0) {
-        return res.status(404).json({
-            message: `Not found a appointments with id ${id}`,
-        })
-    }
-
-    const updatedDocument = await appointmentSchema.findOne(queryFilter, {
-        __v: false,
-    })
-    return res.status(200).json(updatedDocument)
+    return await uniquePatchReturn(res, result, id)
 }
 
 export const patchAppointmentCPF = async (req, res) => {

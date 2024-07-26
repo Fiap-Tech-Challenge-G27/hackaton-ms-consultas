@@ -218,4 +218,12 @@ router.patch(
     patchAppointmentCRN
 )
 
+router.patch(
+    "/:id/cancellation",
+    authenticate({ roles: ["patient"] }),
+    body("cancellation").isBoolean(),
+    body("cancellationJustification").isString(),
+    validate
+)
+
 export default router

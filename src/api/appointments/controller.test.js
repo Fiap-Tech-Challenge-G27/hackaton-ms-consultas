@@ -193,3 +193,38 @@ describe("PATCH /crm", () => {
             .expect(403)
     })
 })
+
+describe("PATCH /cancellation", () => {
+    it("Authorized to doctor", async () => {
+        const appointmentDTO = transformAppointmentToDTO(appointment_1)
+
+        const createdAppointment =
+            await appointmentSchema.create(appointmentDTO)
+
+        const requestBody = {
+            cancellation: true,
+            cancellationJustification: "justification",
+        }
+
+        const expectedBody = {
+            ...transformAppointmentToView(createdAppointment._doc),
+            ...requestBody,
+        }
+
+        await request(appointment_1.patient)
+            .patch(`/appointments/${createdAppointment._id}/cancellation`)
+            .send(requestBody)
+            .expect(200, expectedBody)
+
+        const { approvalStatus } = await appointmentSchema.findById(
+            createdAppointment._id
+        )
+        expect(approvalStatus).toBe(value)
+    })
+
+    it("Unauthorized to doctor", async () => {
+        await request(appointment_1.doctor)
+            .patch("/appointments/crm")
+            .expect(403)
+    })
+})

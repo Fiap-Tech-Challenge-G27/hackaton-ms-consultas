@@ -16,6 +16,12 @@ const appointmentSchema = new Schema({
         enum: ["pending", "approved", "rejected"],
         default: "pending",
     },
+    cancellation: {
+        type: Boolean,
+    },
+    cancellationJustification: {
+        type: String
+    },
     meetUrl: {
         type: String,
     },

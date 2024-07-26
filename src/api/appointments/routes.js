@@ -219,6 +219,41 @@ router.patch(
     patchAppointmentCRN
 )
 
+/**
+ * @swagger
+ * /appointments/{id}/cancellation:
+ *   patch:
+ *     summary:  Calculates an appointment (pacient only)
+ *     tags: [Appointments]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *           pattern: '^[0-9a-fA-F]{24}$'
+ *         required: true
+ *         description: the id of appointment
+ *     requestBody:
+ *       required: true
+ *       content:
+ *          application/json:
+ *            schema:
+ *              type: object
+ *              properties:
+ *                cancellation:
+ *                  type: boolean
+ *                  description: if to cancel (use true)
+ *                cancellationJustification:
+ *                  type: string
+ *                  description: The cancellation justification
+ *     responses:
+ *       200:
+ *         description:  the created of the appointments
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Appointment'
+ */
 router.patch(
     "/:id/cancellation",
     authenticate({ roles: ["patient"] }),

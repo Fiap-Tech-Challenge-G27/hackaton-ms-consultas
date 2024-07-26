@@ -29,6 +29,9 @@
  *         meetUrl:
  *           type: string
  *           description: Google Meet URL
+ *         justification:
+ *           type: string
+ *           description: Justification for rejecting the appointment
  *       example:
  *         id: 669bf86d740be2f57eebff63
  *         doctorCRM: 29278-MG
@@ -136,7 +139,11 @@ router.post(
  *                approvalStatus:
  *                  type: string
  *                  enum: [approved, rejected]
+ *                  required: true
  *                  description: status of approval
+ *                justification:
+ *                  type: string
+ *                  description: Justification for rejecting the appointment
  *     responses:
  *       200:
  *         description:  the created of the appointments

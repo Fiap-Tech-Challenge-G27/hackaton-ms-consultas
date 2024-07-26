@@ -10,5 +10,15 @@
         "src/config.js",
         "src/app.js",
         "test"
+    ],
+    "reporters": [
+        "default",
+        [
+            "jest-sonar",
+            {
+                "outputDirectory": "coverage",
+                "outputName": "test-reporter.xml"
+            }
+        ]
     ]
 }

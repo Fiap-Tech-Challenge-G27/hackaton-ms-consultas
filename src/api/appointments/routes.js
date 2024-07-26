@@ -149,6 +149,7 @@ router.patch(
     "/:id/confirmation",
     authenticate({ roles: ["doctor"] }),
     body("approvalStatus").isString().isIn(["approved", "rejected"]),
+    body("justification").isString().optional(),
     param("id").isString().matches(MONGO_OBJECT_ID_PATTERN),
     validate,
     patchAppointmentConfirmation

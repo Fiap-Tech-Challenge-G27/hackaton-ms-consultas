@@ -50,26 +50,36 @@ describe("PATCH /{_id}/confirmation", () => {
             .expect(403, { message: "Unauthorized to patient" })
     })
 
-    const testChangeValue = (value) => {
+    const testChangeValue = (value, justification = null) => {
+        const buildRequestBody = () => {
+            const result = {
+                approvalStatus: value,
+            }
+
+            if (justification !== null) {
+                result["justification"] = justification
+            }
+
+            return result
+        }
         return async () => {
             const appointmentDTO = transformAppointmentToDTO(appointment_1)
 
             const createdAppointment =
                 await appointmentSchema.create(appointmentDTO)
 
-            const expectedBody = transformAppointmentToView(
-                createdAppointment._doc
-            )
-            expectedBody["approvalStatus"] = value
+            const expectedResponseBody = transformAppointmentToView(createdAppointment._doc)
+            expectedResponseBody["approvalStatus"] = value
+
+            if (justification !== null) {
+                expectedResponseBody["justification"] = justification
+            }
+
 
             await request(appointment_1.doctor)
-                .patch(
-                    `/appointments/${createdAppointment._id}/confirmation`
-                )
-                .send({
-                    approvalStatus: value,
-                })
-                .expect(200, expectedBody)
+                .patch(`/appointments/${createdAppointment._id}/confirmation`)
+                .send(buildRequestBody())
+                .expect(200, expectedResponseBody)
 
             const { approvalStatus } = await appointmentSchema.findById(
                 createdAppointment._id
@@ -79,7 +89,12 @@ describe("PATCH /{_id}/confirmation", () => {
     }
     it("Doctor can approve", testChangeValue("approved"))
 
-    it("Doctor can reject", testChangeValue("rejected"))
+    it("Doctor can reject without justification", testChangeValue("rejected"))
+
+    it(
+        "Doctor can reject with justification",
+        testChangeValue("rejected", "justification")
+    )
 
     it("Doctor when don't exists", async () => {
         const id = new mongoose.Types.ObjectId().toString()

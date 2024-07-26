@@ -34,9 +34,9 @@ export const postAppointment = async (req, res) => {
     const { cpf } = res.locals.user
 
     const result = await appointmentSchema.create({
-        doctorCRM: doctorCRM,
-        patientCPF: cpf,
-        appointmentStart: appointmentStart,
+        doctorCRM: doctorCRM.toString(),
+        patientCPF: cpf.toString(),
+        appointmentStart: appointmentStart.toString(),
         meetUrl: generateMeetLink(),
     })
 

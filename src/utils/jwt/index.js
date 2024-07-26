@@ -17,8 +17,9 @@ export const authenticate = ({ roles }) => {
     return (req, res, next) => {
         const token = extractToken(req)
 
+        let decoded = null
         try {
-            var decoded = jwt.verify(token, jwtSecret)
+            decoded = jwt.verify(token, jwtSecret)
         } catch (err) {
             return res.status(401).json({ message: "Unauthenticated" })
         }
